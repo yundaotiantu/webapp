@@ -18,6 +18,10 @@ export class IndexPage {
 
   products = [];
 
+  pno =1 ;
+
+  hasMoreData:boolean =true;
+
   constructor(public navCtrl: NavController, public navParams: NavParams ,public httpClient:HttpClient) {
 
   }
@@ -37,10 +41,20 @@ export class IndexPage {
 
   doInfinite(event):void{
     setTimeout(()=>{
-      for(let i=0 ; i<30;i++){
-        this.products.push(this.products.length);
-      }
+      let url = `/products/${++this.pno}`;
+      this.httpClient.get(url).subscribe(
+        res=>{
+          if(res['length']<20){
+            this.hasMoreData = false;
+          }else{
+            this.products = this.products.concat(res);
+          }
+        },
+        error=>{
+          console.log('err');
+        }
+      )
       event.complete();
-    },1000)
+    },500)
   }
 }

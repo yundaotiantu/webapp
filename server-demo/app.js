@@ -46,10 +46,14 @@ app.use(cookieParser());
 
 //6.引用文件路径
 let user = require("./routers/user");
+let product = require("./routers/product")
 
 //7.注册
 app.post('/signUp',user.signUp);
 
 //8.登录
-app.post('/signIn',user.signIn)
+app.post('/signIn',user.signIn);
+
+//9.商品列表
+app.get('/products/:page',product.products);
 

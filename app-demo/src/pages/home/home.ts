@@ -72,7 +72,7 @@ export class HomePage {
       }).present();
       this.user.upwd ="";
       return;
-    }
+    }else{
     this.httpClient.post(url,{user:this.user}).subscribe(
       (res)=>{
         if(res['code']==='OK'){
@@ -83,6 +83,7 @@ export class HomePage {
       },
       (err)=>{}
       );
+    }
   }
 
   signUpPage():void{
