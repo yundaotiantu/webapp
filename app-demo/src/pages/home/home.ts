@@ -9,7 +9,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class HomePage {
 
-  products = [];
+  products:any=[];
 
   pno =1 ;
 
@@ -20,11 +20,10 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    console.log('IndexPage 视图加载完成');
-    let url = '/product/1';
+    let url = '/products/1';
     this.httpClient.get(url).subscribe(
       res=>{
-        console.log(res);
+        this.products=res;
       },
       err=>{
         console.log(err);

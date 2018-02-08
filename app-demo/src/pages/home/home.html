@@ -8,6 +8,7 @@
 
 <ion-content padding>
   <div *ngFor="let product of products">
+
   </div>
 
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="hasMoreData">
