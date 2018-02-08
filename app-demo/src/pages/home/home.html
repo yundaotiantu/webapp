@@ -7,16 +7,12 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item>
-      <ion-label floating>用户名</ion-label>
-      <ion-input [(ngModel)]="user.uname"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating>密码</ion-label>
-      <ion-input [(ngModel)]="user.upwd" type="password"></ion-input>
-    </ion-item>
-  </ion-list>
-  <button block ion-button (tap)="signIn()">登录</button>
-  <button ion-button block color="secondary" (tap)="signUpPage()">注册</button>
+  <div *ngFor="let product of products">
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="hasMoreData">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>
+
