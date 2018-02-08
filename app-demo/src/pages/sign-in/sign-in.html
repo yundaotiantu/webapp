@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      登录
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>用户名</ion-label>
+      <ion-input [(ngModel)]="user.uname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>密码</ion-label>
+      <ion-input [(ngModel)]="user.upwd" type="password"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button block ion-button (tap)="signIn()">登录</button>
+  <button ion-button block color="secondary" (tap)="signUpPage()">注册</button>
+</ion-content>
