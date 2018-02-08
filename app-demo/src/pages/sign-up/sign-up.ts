@@ -65,12 +65,28 @@ export class SignUpPage {
         buttons:['Ok']
       }).present();
       return;
+    }else if(!msg.ureg.test(this.user.upwd)){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'密码格式不正确',
+        buttons:['Ok']
+      }).present();
+      this.user.upwd="";
+      return;
     }else if(this.user.cpwd!=this.user.upwd){
       this.alertCtrl.create({
         title:'输入有误',
         subTitle:'两次密码不一致',
         buttons:['Ok']
       }).present();
+      return;
+    }else if(!msg.creg.test(this.user.cpwd)){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'确认密码格式不正确',
+        buttons:['Ok']
+      }).present();
+      this.user.cpwd="";
       return;
     }else if(this.user.email==""){
       this.alertCtrl.create({
@@ -79,12 +95,28 @@ export class SignUpPage {
         buttons:['Ok']
       }).present();
       return;
+    }else if(!msg.ereg.test(this.user.email)){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'邮箱格式不正确',
+        buttons:['Ok']
+      }).present();
+      this.user.email="";
+      return;
     }else if(this.user.phone=="") {
       this.alertCtrl.create({
         title: '输入有误',
         subTitle: '手机号码不能为空',
         buttons: ['Ok']
       }).present();
+    }else if(!msg.preg.test(this.user.phone)){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'手机号码格式不正确',
+        buttons:['Ok']
+      }).present();
+      this.user.phone="";
+      return;
     }else{
       this.httpClient.post(url,{user:this.user}).subscribe(
       (res)=>{
@@ -94,7 +126,28 @@ export class SignUpPage {
             subTitle:'用户名已经存在',
             buttons:['Ok']
           }).present();
-        };
+          this.user.uname="";
+        }else if(res['code']==2){
+          this.alertCtrl.create({
+            title:'输入有误',
+            subTitle:'邮箱已经存在',
+            buttons:['Ok']
+          }).present();
+          this.user.email="";
+        }else if(res['code']==3){
+          this.alertCtrl.create({
+            title:'输入有误',
+            subTitle:'手机号码已经存在',
+            buttons:['Ok']
+          }).present();
+          this.user.phone="";
+        }else if(res['code']=='ok'){
+          this.alertCtrl.create({
+            title:'注册成功，去登陆',
+            buttons:['Ok']
+          }).present();
+          this.navCtrl.push('HomePage');
+        }
       },
       (err)=>{
         console.log(err);
