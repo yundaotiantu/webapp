@@ -22,7 +22,7 @@ export class HomePage {
     let url = '/signIn';
     this.httpClient.post(url,{user:this.user}).subscribe(
       (res)=>{
-        if(res['status']==='OK'){
+        if(res['code']==='OK'){
           this.navCtrl.push('IndexPage');
         }else{
           console.error('登录失败')

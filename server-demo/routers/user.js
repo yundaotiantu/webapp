@@ -62,9 +62,9 @@ exports.signIn = (req,res)=>{
         if(result.length>0){
             req.session.user = user;
             req.session.user.uid = result[0].uid;
-            res.send({"status":"OK"})
+            res.send({"code":"OK"})
         }else{
-            res.send({"status":"err"})
+            res.send({"code":"err"})
         }
     })
 }
