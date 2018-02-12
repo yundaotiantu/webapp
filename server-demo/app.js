@@ -14,7 +14,7 @@ app.listen(3000);
 var pool = mysql.createPool({
     host:"127.0.0.1",
     port:"3306",
-    database:"db",
+    database:"yb",
     user:"root",
     password:"",
     connectionLimit:25
@@ -23,30 +23,47 @@ var pool = mysql.createPool({
 //1.注册
 app.post('/signUp',(req,res)=>{
     let user = req.body.user;
-    let sql = "SELECT * FROM db.user WHERE email = ?";
-    pool.query(sql,[user.email],(err,result)=>{
+    let sql = "SELECT * FROM yb.user WHERE uname = ?";
+    pool.query(sql,[user.uname],(err,result)=>{
         if(err) throw err;
         if(result.length===1){
-            res.send({"status":"exist"});
+            res.send({"code":"1"});
+        }else{
+            sql = "SELECT * FROM yb.user WHERE email = ?";
+            pool.query(sql,[user.email],(err,result)=>{
+                if(err) throw err;
+                if(result.length===1){
+                    res.send({"code":"2"});
+                }else{
+                    sql = "SELECT * FROM yb.user WHERE phone = ?";
+                    pool.query(sql,[user.phone],(err,result)=>{
+                        if(err) throw err;
+                        if(result.length===1){
+                            res.send({"code":"3"});
+                        }else{
+                            sql = 'INSERT INTO db.user VALUES(NULL,?,?,?,?,?,?)';
+                            pool.query(sql,[user.email,user.uname,user.password,user.gender,user.age,user.city],(err,results)=>{
+                                if(err) throw err;
+                                if(results.affectedRows===1){
+                                    res.send({"code":"ok"});
+                                }else{
+                                    res.send({"code":"err"});
+                                }
+                            })
+                        }
+                    });
+                }
+            });
         }
     });
-    sql = 'INSERT INTO db.user VALUES(NULL,?,?,?,?,?,?)';
-    pool.query(sql,[user.email,user.uname,user.password,user.gender,user.age,user.city],(err,results)=>{
-        if(err) throw err;
-        if(results.affectedRows===1){
-            res.send({"statue":"ok"});
-        }else{
-            res.send({"statue":"err"});
-        }
-    })
 })
 
 //2.登录
 app.post('/signIn',(req,res)=>{
     let user = req.body.user;
     console.log(user);
-    let sql = "SELECT * FROM db.user WHERE email=? and password=?";
-    pool.query(sql,[user.email,user.password],(err,result)=>{
+    let sql = "SELECT * FROM yb.user WHERE uname=? and upwd=?";
+    pool.query(sql,[user.uname,user.upwd],(err,result)=>{
         console.log(result);
         if(err) throw err;
         if(result.length>0){
@@ -57,11 +74,3 @@ app.post('/signIn',(req,res)=>{
     })
 })
 
-
-//3.商品列表
-app.get('/product/:page',(req,res)=>{
-    let page = req.params.page;
-    const pageSize = 20;
-    let sql = "SELECT title FROM db.product LIMIT ? OFFSET ?";
-
-})

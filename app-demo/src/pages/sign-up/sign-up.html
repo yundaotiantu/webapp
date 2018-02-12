@@ -35,6 +35,29 @@
       <ion-label floating>电话号码</ion-label>
       <ion-input [(ngModel)]="user.phone"></ion-input>
     </ion-item>
+    <ion-list-header>性别</ion-list-header>
+    <ion-list radio-group [(ngModel)]="user.gender">
+      <ion-item>
+        <ion-label>男</ion-label>
+        <ion-radio checked  value="male"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>女</ion-label>
+        <ion-radio value="female"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>年龄</ion-label>
+        <ion-input [(ngModel)]="user.age"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-list-header>城市</ion-list-header>
+    <ion-item>
+      <ion-select [(ngModel)]="user.city">
+        <ion-option value="BeiJing" selected>北京</ion-option>
+        <ion-option value="ShangHai">上海</ion-option>
+        <ion-option value="GuangZhou">广州</ion-option>
+      </ion-select>
+    </ion-item>
   </ion-list>
   <button ion-button block color="secondary" (tap)="signUp()">注册</button>
 </ion-content>

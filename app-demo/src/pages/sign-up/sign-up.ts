@@ -21,7 +21,10 @@ export class SignUpPage {
     upwd:'',
     cpwd:'',
     email:'',
-    phone:''
+    phone:'',
+    gender:'male',
+    age:'',
+    city:'BeiJing'
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams , public httpClient : HttpClient , public alertCtrl:AlertController , public toastCtrl:ToastController) {
