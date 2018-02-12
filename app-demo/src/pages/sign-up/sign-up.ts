@@ -35,20 +35,7 @@ export class SignUpPage {
     let url = '/signUp';
     this.httpClient.post(url,{user:this.user}).subscribe(
       (res)=>{
-        if(res['status']==='exist'){
-          this.alertCtrl.create({
-            title:'Eorror',
-            subTitle:'Emial is already exist',
-            buttons:['Ok']
-          }).present()
-        }else if(res['status'] === "err"){
-           this.toastCtrl.create({
-             message:"服务器错误",
-             position:"middle"
-           }).present()
-        }else{
-          this.navCtrl.push('HomePage');
-        }
+        console.log(res);
       },
       (err)=>{
         console.log(err);
