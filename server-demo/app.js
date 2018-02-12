@@ -41,8 +41,8 @@ app.post('/signUp',(req,res)=>{
                         if(result.length===1){
                             res.send({"code":"3"});
                         }else{
-                            sql = 'INSERT INTO db.user VALUES(NULL,?,?,?,?,?,?)';
-                            pool.query(sql,[user.email,user.uname,user.password,user.gender,user.age,user.city],(err,results)=>{
+                            sql = 'INSERT INTO db.user VALUES(NULL,?,?,?,?,?,?,?)';
+                            pool.query(sql,[user.uname,user.password,user.email,user.phone,user.gender,user.age,user.city],(err,results)=>{
                                 if(err) throw err;
                                 if(results.affectedRows===1){
                                     res.send({"code":"ok"});
