@@ -17,12 +17,11 @@ import { HttpClient } from "@angular/common/http";
 export class SignUpPage {
 
   user = {
-    email:'',
     uname:'',
-    password:'',
-    gender:'male',
-    age:'',
-    city:'Beijing'
+    upwd:'',
+    cpwd:'',
+    email:'',
+    phone:''
   };
 
   constructor(public navCtrl: NavController, public navParams: NavParams , public httpClient : HttpClient , public alertCtrl:AlertController , public toastCtrl:ToastController) {
