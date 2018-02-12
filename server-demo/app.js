@@ -1,16 +1,29 @@
+//nodejs 央视商城网
+//1:加载对应模块
+//  http
+//  express
+//  mysql
+//  body-parser  处理post请求参数
+const http = require("http");
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
-let app = new express();
+//加载cook和session
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
-//配置 middleware
+////2.创建服务器3000
+let app = new express();
+var server = http.createServer(app);
+server.listen(3000);
+
+//3.配置body.parser
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-app.listen(3000);
 
-//创建连接池
+//4.创建连接池
 var pool = mysql.createPool({
     host:"127.0.0.1",
     port:"3306",
@@ -20,58 +33,23 @@ var pool = mysql.createPool({
     connectionLimit:25
 })
 
-//1.注册
-app.post('/signUp',(req,res)=>{
-    let user = req.body.user;
-    console.log(user);
-    let sql = "SELECT * FROM yb.user WHERE uname = ?";
-    pool.query(sql,[user.uname],(err,result)=>{
-        if(err) throw err;
-        if(result.length===1){
-            res.send({"code":"1"});
-        }else{
-            sql = "SELECT * FROM yb.user WHERE email = ?";
-            pool.query(sql,[user.email],(err,result)=>{
-                if(err) throw err;
-                if(result.length===1){
-                    res.send({"code":"2"});
-                }else{
-                    sql = "SELECT * FROM yb.user WHERE phone = ?";
-                    pool.query(sql,[user.phone],(err,result)=>{
-                        if(err) throw err;
-                        if(result.length===1){
-                            res.send({"code":"3"});
-                        }else{
-                            sql = 'INSERT INTO yb.user VALUES(NULL,?,md(?),?,?,?,?,?)';
-                            pool.query(sql,[user.uname,user.upwd,user.email,user.phone,user.gender,user.age,user.city],(err,results)=>{
-                                if(err) throw err;
-                                if(results.affectedRows===1){
-                                    res.send({"code":"ok"});
-                                }else{
-                                    res.send({"code":"err"});
-                                }
-                            })
-                        }
-                    });
-                }
-            });
-        }
-    });
-})
+//5.配置session
+app.use(session({
+    secret: 'express ',
+    resave: true,
+    saveUninitialized: true,
+    cookie:{
+        maxAge: 1000*60*60
+    }
+}));
+app.use(cookieParser());
 
-//2.登录
-app.post('/signIn',(req,res)=>{
-    let user = req.body.user;
-    console.log(user);
-    let sql = "SELECT * FROM yb.user WHERE uname=? and upwd=md(?)";
-    pool.query(sql,[user.uname,user.upwd],(err,result)=>{
-        console.log(result);
-        if(err) throw err;
-        if(result.length>0){
-            res.send({"status":"OK"})
-        }else{
-            res.send({"status":"err"})
-        }
-    })
-})
+//6.引用文件路径
+let user = require("./routers/user");
+
+//7.注册
+app.post('/signUp',user.signUp);
+
+//8.登录
+app.post('/signIn',user.signIn)
 
