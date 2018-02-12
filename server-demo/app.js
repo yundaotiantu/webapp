@@ -23,6 +23,7 @@ var pool = mysql.createPool({
 //1.注册
 app.post('/signUp',(req,res)=>{
     let user = req.body.user;
+    console.log(user);
     let sql = "SELECT * FROM yb.user WHERE uname = ?";
     pool.query(sql,[user.uname],(err,result)=>{
         if(err) throw err;
@@ -41,8 +42,8 @@ app.post('/signUp',(req,res)=>{
                         if(result.length===1){
                             res.send({"code":"3"});
                         }else{
-                            sql = 'INSERT INTO db.user VALUES(NULL,?,?,?,?,?,?,?)';
-                            pool.query(sql,[user.uname,user.password,user.email,user.phone,user.gender,user.age,user.city],(err,results)=>{
+                            sql = 'INSERT INTO yb.user VALUES(NULL,?,?,?,?,?,?,?)';
+                            pool.query(sql,[user.uname,user.upwd,user.email,user.phone,user.gender,user.age,user.city],(err,results)=>{
                                 if(err) throw err;
                                 if(results.affectedRows===1){
                                     res.send({"code":"ok"});
