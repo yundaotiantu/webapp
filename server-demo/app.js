@@ -63,7 +63,7 @@ app.post('/signUp',(req,res)=>{
 app.post('/signIn',(req,res)=>{
     let user = req.body.user;
     console.log(user);
-    let sql = "SELECT * FROM yb.user WHERE uname=? and upwd=?";
+    let sql = "SELECT * FROM yb.user WHERE uname=? and upwd=md(?)";
     pool.query(sql,[user.uname,user.upwd],(err,result)=>{
         console.log(result);
         if(err) throw err;
