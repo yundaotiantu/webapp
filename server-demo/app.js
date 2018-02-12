@@ -42,7 +42,7 @@ app.post('/signUp',(req,res)=>{
                         if(result.length===1){
                             res.send({"code":"3"});
                         }else{
-                            sql = 'INSERT INTO yb.user VALUES(NULL,?,?,?,?,?,?,?)';
+                            sql = 'INSERT INTO yb.user VALUES(NULL,?,md(?),?,?,?,?,?)';
                             pool.query(sql,[user.uname,user.upwd,user.email,user.phone,user.gender,user.age,user.city],(err,results)=>{
                                 if(err) throw err;
                                 if(results.affectedRows===1){
