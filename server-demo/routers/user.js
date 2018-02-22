@@ -33,7 +33,7 @@ exports.signUp = (req,res)=>{
                         if(result.length===1){
                             res.send({"code":"3"});
                         }else{
-                            sql = 'INSERT INTO yb.user VALUES(NULL,?,md(?),?,?,?,?,?)';
+                            sql = 'INSERT INTO yb.user VALUES(NULL,?,md5(?),?,?,?,?,?)';
                             pool.query(sql,[user.uname,user.upwd,user.email,user.phone,user.gender,user.age,user.city],(err,results)=>{
                                 if(err) throw err;
                                 if(results.affectedRows===1){
@@ -55,7 +55,7 @@ exports.signUp = (req,res)=>{
 exports.signIn = (req,res)=>{
     let user = req.body.user;
     console.log(user);
-    let sql = "SELECT * FROM yb.user WHERE uname=? and upwd=md(?)";
+    let sql = "SELECT * FROM yb.user WHERE uname=? and upwd=md5(?)";
     pool.query(sql,[user.uname,user.upwd],(err,result)=>{
         console.log(result);
         if(err) throw err;

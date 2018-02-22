@@ -35,14 +35,71 @@ export class SignUpPage {
   }
 
   signUp():void{
+    let msg = {
+      nreg:/^\w{4,10}$/,
+      ureg:/^\w{6,10}$/,
+      creg:/^\w{6,10}$/,
+      preg:/^1[34578]\d{9}$/,
+      ereg:/\w{6,11}@[A-Za-z]+\.com/
+    };
     let url = '/signUp';
-    this.httpClient.post(url,{user:this.user}).subscribe(
+    if(this.user.uname==""){
+        this.alertCtrl.create({
+          title:'输入有误',
+          subTitle:'用户名不能为空',
+          buttons:['Ok']
+        }).present();
+        return;
+    }else if(!msg.nreg.test(this.user.uname)){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'用户名格式不正确',
+        buttons:['Ok']
+      }).present();
+      this.user.uname="";
+      return;
+    }else if(this.user.upwd==""){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'密码不能为空',
+        buttons:['Ok']
+      }).present();
+      return;
+    }else if(this.user.cpwd!=this.user.upwd){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'两次密码不一致',
+        buttons:['Ok']
+      }).present();
+      return;
+    }else if(this.user.email==""){
+      this.alertCtrl.create({
+        title:'输入有误',
+        subTitle:'邮箱不能为空',
+        buttons:['Ok']
+      }).present();
+      return;
+    }else if(this.user.phone=="") {
+      this.alertCtrl.create({
+        title: '输入有误',
+        subTitle: '手机号码不能为空',
+        buttons: ['Ok']
+      }).present();
+    }else{
+      this.httpClient.post(url,{user:this.user}).subscribe(
       (res)=>{
-        console.log(res);
+        if(res['code']==1){
+          this.alertCtrl.create({
+            title:'输入有误',
+            subTitle:'用户名已经存在',
+            buttons:['Ok']
+          }).present();
+        };
       },
       (err)=>{
         console.log(err);
       }
     );
+    }
   }
 }
